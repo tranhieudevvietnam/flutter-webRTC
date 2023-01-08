@@ -20,7 +20,7 @@ async function startMeeting(params, callBack) {
       return callBack(null, repo);
     })
     .catch((error) => {
-      return callBack(error, null);
+      return callBack(error);
     });
 }
 
@@ -45,6 +45,7 @@ async function isMeetingPresent(meetingId, callBack) {
     .findById(meetingId)
     .populate("meetingUsers", "MeetingUser")
     .then((repo) => {
+      // console.log("isMeetingPresent -> success");
       if (!repo) callBack("Invalid Meeting Id");
       else callBack(null, true);
     })

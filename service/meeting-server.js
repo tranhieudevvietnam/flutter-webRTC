@@ -17,15 +17,20 @@ function listenMessage(meetingId, socket, meetingServer) {
 }
 
 function handleMessage(meetingId, socket, message, meetingServer) {
+  // console.log(`handleMessage - meetingId: ${meetingId}`);
+
   var payload = "";
   if (typeof message === "string") {
     payload = parserMessage(message);
+    // console.log(`handleMessage: ${message}`);
+
   } else {
     payload = message;
   }
 
-  switch (payload) {
-    case MeetingPayloadEnum.JOINED_MEETING:
+  switch (payload.type) {
+    case MeetingPayloadEnum.JOIN_MEETING:
+      // console.log("MeetingPayloadEnum.JOINED_MEETING");
       meetingHelper.joinMeeting(meetingId, socket, payload, meetingServer);
       break;
     case MeetingPayloadEnum.CONNECTION_REQUEST:
@@ -46,8 +51,8 @@ function handleMessage(meetingId, socket, message, meetingServer) {
       meetingHelper.forwardIceCandidate(
         meetingId,
         socket,
+        meetingServer,
         payload,
-        meetingServer
       );
       break;
     case MeetingPayloadEnum.LEAVE_MEETING:
@@ -61,7 +66,7 @@ function handleMessage(meetingId, socket, message, meetingServer) {
       meetingHelper.forwardEvent(meetingId, socket, meetingServer, payload);
       break;
     case MeetingPayloadEnum.UNKNOWN:
-      meetingHelper.forwardEvent(meetingId, socket, meetingServer, payload);
+      // meetingHelper.forwardEvent(meetingId, socket, meetingServer, payload);
       break;
 
     default:

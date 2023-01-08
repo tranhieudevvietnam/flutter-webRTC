@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/configs/meeting_config.dart';
 import 'package:flutter_app/models/meeting_detail.dart';
 import 'package:flutter_app/pages/home_screen.dart';
 import 'package:flutter_app/utils/user_utils.dart';
@@ -49,12 +50,16 @@ class _MeetingPageState extends State<MeetingPage> {
   startMeeting() async {
     final String uuid = await loadUuId();
     meetingHelper = WebRTCMeetingHelper(
-        url: "http://192.168.10.212:4000",
+        url: "http://$meetingConfigAddress:$meetingConfigPort",
         meetingId: widget.meetingId,
         userId: uuid,
         name: widget.name);
     MediaStream localStream =
-        await navigator.mediaDevices.getUserMedia(mediaConstraints);
+        await navigator.mediaDevices.getUserMedia(mediaConstraints,);
+ 
+
+    _locaRenderer.srcObject = localStream;
+    meetingHelper!.stream = localStream;
     meetingHelper!.on("open", context, (ev, context) {
       setState(() {
         isConnectionFailed = false;
@@ -158,6 +163,8 @@ class _MeetingPageState extends State<MeetingPage> {
             bottom: 10,
             right: 0,
             child: SizedBox(
+              height: 200,
+              width: 100,
               child: RTCVideoView(_locaRenderer),
             ))
       ],

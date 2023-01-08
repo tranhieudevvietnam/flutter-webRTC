@@ -3,6 +3,7 @@ const { MeetingPayloadEnum } = require("../utils/meeting-payload.enum");
 
 async function joinMeeting(meetingId, socket, payload, meetingServer) {
   const { userId, name } = payload.data;
+  // console.log("joinMeeting......");
 
   meetingServices.isMeetingPresent(meetingId, async (error, results) => {
     if (error && !results) {
@@ -149,6 +150,8 @@ function forwardEvent(meetingId, socket, meetingServer, payload) {
 }
 
 async function addUser(socket, { meetingId, userId, name }) {
+  // console.log(`addUser: `);
+
   let promise = new Promise(function (resolve, reject) {
     meetingServices.getMeetingUser({ meetingId, userId }, (error, results) => {
       if (!results) {
@@ -160,6 +163,7 @@ async function addUser(socket, { meetingId, userId, name }) {
           joined: true,
           isAlive: true,
         };
+        // console.log(`addUser: ${model}`);
         meetingServices.joinMeeting(model, (error, results) => {
           if (results) {
             resolve(true);

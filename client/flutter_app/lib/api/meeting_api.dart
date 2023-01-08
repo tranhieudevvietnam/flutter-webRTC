@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter_app/configs/meeting_config.dart';
 import 'package:flutter_app/utils/user_utils.dart';
 import 'package:http/http.dart' as http;
 
-String MEETING_API_URL = "http://192.168.10.212:4000/api/meeting";
+// String MEETING_API_URL = "http://192.168.10.212:4000/api/meeting";
+String MEETING_API_URL = "http://$meetingConfigAddress:$meetingConfigPort/api/meeting";
 
 final client = http.Client();
 
