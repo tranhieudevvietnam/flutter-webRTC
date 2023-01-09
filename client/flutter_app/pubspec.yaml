@@ -35,7 +35,7 @@ dependencies:
   uuid: ^3.0.7
   # flutter_webrtc_wrapper: ^1.0.2
   flutter_webrtc_wrapper: 
-    path: /Users/user/Desktop/flutter_webrtc_wrapper-1.0.2
+    path: ../flutter_webrtc_wrapper
   
   snippet_coder_utils: ^1.0.12
   shared_preferences: ^2.0.15

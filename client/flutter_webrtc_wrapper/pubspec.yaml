@@ -2,15 +2,22 @@ name: flutter_webrtc_wrapper
 description: A new Flutter plugin project.
 version: 0.0.1
 homepage:
+publish_to: none
 
 environment:
-  sdk: '>=2.18.2 <3.0.0'
+  sdk: ">=2.18.2 <3.0.0"
   flutter: ">=2.5.0"
 
 dependencies:
   flutter:
     sdk: flutter
   plugin_platform_interface: ^2.0.2
+  eventify: ^1.0.1
+  # flutter_webrtc: ^0.9.12
+  # flutter_webrtc: ^0.9.18
+  flutter_webrtc:
+    path: ../flutter-webrtc-main
+  socket_io_client: ^2.0.0
 
 dev_dependencies:
   flutter_test:

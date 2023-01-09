@@ -34,6 +34,8 @@ async function joinMeeting(meetingId, socket, payload, meetingServer) {
 }
 function forwardConnectionRequest(meetingId, socket, meetingServer, payload) {
   const { userId, otherUserId, name } = payload.data;
+  console.log(`xxxxx ${userId} - ${otherUserId} - ${name}`);
+
   var model = {
     meetingId: meetingId,
     userId: otherUserId,

@@ -23,7 +23,6 @@ function handleMessage(meetingId, socket, message, meetingServer) {
   if (typeof message === "string") {
     payload = parserMessage(message);
     // console.log(`handleMessage: ${message}`);
-
   } else {
     payload = message;
   }
@@ -37,8 +36,8 @@ function handleMessage(meetingId, socket, message, meetingServer) {
       meetingHelper.forwardConnectionRequest(
         meetingId,
         socket,
-        payload,
-        meetingServer
+        meetingServer,
+        payload
       );
       break;
     case MeetingPayloadEnum.OFFER_SDP:
@@ -52,7 +51,7 @@ function handleMessage(meetingId, socket, message, meetingServer) {
         meetingId,
         socket,
         meetingServer,
-        payload,
+        payload
       );
       break;
     case MeetingPayloadEnum.LEAVE_MEETING:
@@ -79,6 +78,7 @@ function initMeetingServer(server) {
 
   meetingServer.on("connection", (socket) => {
     const meetingId = socket.handshake.query.id;
+    console.log("connection socket");
     listenMessage(meetingId, socket, meetingServer);
   });
 }
