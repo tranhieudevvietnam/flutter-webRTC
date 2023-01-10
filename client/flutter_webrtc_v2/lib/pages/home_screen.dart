@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_webrtc_v2/utils/device_utils.dart';
+import 'package:flutter_webrtc_v2/utils/share_preference_utils.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 
 import 'list_devices_screen.dart';
@@ -13,6 +15,17 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<FormState> globalKey = GlobalKey<FormState>();
   String hostIp = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    DeviceUtils.instant.init();
+    final hostIpLocal = SharePreferenceUtils.pref.getString("hostIp");
+    if (hostIpLocal?.isNotEmpty == true) {
+      hostIp = hostIpLocal!;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
             }, (onSaved) {
               hostIp = onSaved;
             },
+                initialValue: hostIp,
                 borderColor: Colors.red,
                 borderFocusColor: Colors.red,
                 borderRadius: 10),
@@ -49,6 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             FormHelper.submitButton("Start", () {
               if (validateAndSave()) {
+                SharePreferenceUtils.pref.setString("hostIp", hostIp);
                 validateMeeting(context: context, host: hostIp);
               }
             })
