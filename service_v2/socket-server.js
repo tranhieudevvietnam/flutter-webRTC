@@ -64,7 +64,13 @@ function listenMessage(socketId, socket, socketServer) {
   });
   socket.on("onChange", (message) => {
     var payload = parserMessage(message);
-    const { type, deviceIdSender, deviceNameSender, deviceId } = payload;
+    const {
+      typeSocketStatus,
+      deviceIdSender,
+      deviceNameSender,
+      deviceId,
+      description,
+    } = payload;
     const itemData = getItemDataByDeviceId(deviceId);
     let count = -1;
     try {
@@ -74,15 +80,24 @@ function listenMessage(socketId, socket, socketServer) {
     }
     if (itemData !== null && count >= 0) {
       const { deviceId, socketId } = itemData;
+      const { sdp, type, sdpMid, candidate, sdpMLineIndex } =
+        parserMessage(description);
 
       sendOnChangeByDevice(socketServer, socketId, {
-        type: type,
+        type: typeSocketStatus,
         data: {
           socketId: socketId,
           deviceId: deviceId,
           deviceIdSender: deviceIdSender,
           deviceName: deviceNameSender,
-          sessionId: `${deviceIdSender}-${deviceId}`,
+          sessionId: `${deviceId}-${deviceIdSender}`,
+          description: {
+            sdp: sdp,
+            type: type,
+            sdpMLineIndex: sdpMLineIndex,
+            candidate: candidate,
+            sdpMid: sdpMid,
+          },
         },
       });
     } else {

@@ -1,39 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:flutter_webrtc_v2/pages/components/session.dart';
 import 'package:flutter_webrtc_v2/pages/components/signaling.dart';
-
 
 class CallScreen extends StatefulWidget {
   final Signaling signaling;
-  const CallScreen({super.key, required this.signaling});
+  final RTCVideoRenderer localRenderer;
+  final RTCVideoRenderer remoteRenderer;
+  final Session session;
+  const CallScreen(
+      {super.key,
+      required this.signaling,
+      required this.localRenderer,
+      required this.remoteRenderer,
+      required this.session});
 
   @override
   State<CallScreen> createState() => _CallScreenState();
 }
 
 class _CallScreenState extends State<CallScreen> {
-  final RTCVideoRenderer _localRenderer = RTCVideoRenderer();
-  final RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
-
   @override
   initState() {
     super.initState();
-    initRenderers();
-
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      try {
-        MediaStream localStream = await widget.signaling.createStream();
-        _localRenderer.srcObject = localStream;
-        setState(() {});
-      } catch (e) {
-        rethrow;
-      }
-    });
-  }
-
-  initRenderers() async {
-    await _localRenderer.initialize();
-    await _remoteRenderer.initialize();
   }
 
   @override
@@ -53,7 +42,7 @@ class _CallScreenState extends State<CallScreen> {
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
                   decoration: const BoxDecoration(color: Colors.black54),
-                  child: RTCVideoView(_remoteRenderer),
+                  child: RTCVideoView(widget.remoteRenderer),
                 )),
             Positioned(
               left: 20.0,
@@ -62,7 +51,7 @@ class _CallScreenState extends State<CallScreen> {
                 width: orientation == Orientation.portrait ? 90.0 : 120.0,
                 height: orientation == Orientation.portrait ? 120.0 : 90.0,
                 decoration: const BoxDecoration(color: Colors.black54),
-                child: RTCVideoView(_localRenderer, mirror: true),
+                child: RTCVideoView(widget.localRenderer, mirror: true),
               ),
             ),
           ]),
